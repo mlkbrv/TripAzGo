@@ -43,6 +43,7 @@ INSTALLED_APPS = [
     'trips.apps.TripsConfig',
     'market.apps.MarketConfig',
     'attractions.apps.AttractionsConfig',
+    'django_extensions'
 ]
 
 MIDDLEWARE = [

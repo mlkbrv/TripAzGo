@@ -25,12 +25,12 @@ class ProductDetail(generics.RetrieveAPIView):
 
 
 class ShopCategoryList(generics.ListAPIView):
-    queryset = ShopCategory.objects.filter(is_verified=True)
+    queryset = ShopCategory.objects.all()
     serializer_class = ProductCategorySerializer
 
 
 class AllShops(generics.ListAPIView):
-    queryset = Shop.objects.all()
+    queryset = Shop.objects.filter(is_verified=True)
     serializer_class = ShopSerializer
 
 
