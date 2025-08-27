@@ -8,6 +8,11 @@ class UserDetailSerializer(serializers.ModelSerializer):
         fields = '__all__'
         read_only_fields = ('id','date_joined')
 
+class UserShortSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = User
+        fields = ('id', 'email', 'first_name', 'last_name')
+
 class UserRegisterSerializer(serializers.ModelSerializer):
     password = serializers.CharField(
         write_only=True,
