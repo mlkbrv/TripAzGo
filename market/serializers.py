@@ -9,7 +9,11 @@ class ShopOwnerProfileSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = ShopOwnerProfile
-        fields = ('id', 'user', 'is_verified', 'document')
+        fields = [
+            'user',
+            'is_verified',
+            'document'
+        ]
 
 
 class CustomerProfileSerializer(serializers.ModelSerializer):
@@ -17,7 +21,10 @@ class CustomerProfileSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = CustomerProfile
-        fields = ('id', 'user', 'is_blocked')
+        fields = [
+            'user',
+            'is_blocked'
+        ]
 
 
 class ProductCategorySerializer(serializers.ModelSerializer):
