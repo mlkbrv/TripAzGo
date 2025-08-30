@@ -39,7 +39,8 @@ INSTALLED_APPS = [
     'rest_framework_simplejwt',
     'django_extensions',
     'users.apps.UsersConfig',
-    'phonenumber_field'
+    'phonenumber_field',
+    'drf_spectacular'
 ]
 
 MIDDLEWARE = [
@@ -137,7 +138,8 @@ REST_FRAMEWORK = {
         'rest_framework.permissions.IsAuthenticated',
     ),
     'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.LimitOffsetPagination',
-    'PAGE_SIZE': 10
+    'PAGE_SIZE': 10,
+    'DEFAULT_SCHEMA_CLASS': 'drf_spectacular.openapi.AutoSchema',
 }
 
 from datetime import timedelta
@@ -149,4 +151,11 @@ SIMPLE_JWT = {
     "BLACKLIST_AFTER_ROTATION": True,
     "UPDATE_LAST_LOGIN": True,
     'USERNAME_FIELD': 'email',
+}
+
+SPECTACULAR_SETTINGS = {
+    'TITLE': 'TripAzGo',
+    'DESCRIPTION': 'Platform',
+    'VERSION': '1.0.0',
+    'SERVE_INCLUDE_SCHEMA': False,
 }
