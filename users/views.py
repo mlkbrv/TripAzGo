@@ -3,7 +3,7 @@ from django.shortcuts import render
 from rest_framework import generics, permissions, status
 
 from .models import User, SuperHost
-from .serializers import UserRegisterSerializer, UserSerializer
+from .serializers import UserRegisterSerializer, UserSerializer, SuperHostSerializer
 
 
 class UserRegisterAPIView(generics.CreateAPIView):
@@ -22,3 +22,15 @@ class UserRegisterAPIView(generics.CreateAPIView):
                 'user': UserSerializer(user, context=self.get_serializer_context()).data
             }
             , status=status.HTTP_201_CREATED)
+
+class ProfileAPIView(generics.RetrieveUpdateDestroyAPIView):
+    serializer_class = UserSerializer
+    permission_classes = (permissions.IsAuthenticated,)
+
+    def get_object(self):
+        return self.request.user
+
+class SuperHostsListAPIView(generics.ListAPIView):
+    serializer_class = SuperHostSerializer
+    permission_classes = (permissions.AllowAny,)
+    queryset = SuperHost.objects.all()

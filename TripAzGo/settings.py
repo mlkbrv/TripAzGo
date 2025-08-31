@@ -39,6 +39,7 @@ INSTALLED_APPS = [
     'rest_framework_simplejwt',
     'django_extensions',
     'users.apps.UsersConfig',
+    'accomodations.apps.AccomodationsConfig',
     'phonenumber_field',
     'drf_spectacular'
 ]
