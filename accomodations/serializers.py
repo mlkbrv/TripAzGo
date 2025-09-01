@@ -1,7 +1,7 @@
 from django.core.exceptions import ValidationError
 from django.utils import timezone
 from rest_framework import serializers
-from models import Amenity, Accommodation, Locations, Booking, AccommodationFile
+from .models import Amenity, Accommodation, Locations, Booking, AccommodationFile
 from users.serializers import SuperHostSerializer, CityAncCountrySerializer
 
 
@@ -38,10 +38,10 @@ class AmenitySerializer(serializers.ModelSerializer):
 
 class AccommodationSerializer(serializers.ModelSerializer):
     owner = SuperHostSerializer(read_only=True)
-    amenities = AmenitySerializer(many=True, read_only=True)
-    location = LocationsSerializer(many=True, read_only=True)
-    files = AccommodationFileSerializer(many=True, read_only=True)
-    city = CityAncCountrySerializer(read_only=True)
+    amenities = AmenitySerializer(many=True)
+    location = LocationsSerializer(many=True)
+    files = AccommodationFileSerializer(many=True)
+    city = CityAncCountrySerializer()
 
     class Meta:
         model = Accommodation
@@ -64,7 +64,7 @@ class AccommodationSerializer(serializers.ModelSerializer):
 
 
 class BookingSerializer(serializers.ModelSerializer):
-    accommodation = AccommodationSerializer(read_only=True)
+    accommodation = AccommodationSerializer()
     total_price = serializers.SerializerMethodField()
 
     class Meta:
