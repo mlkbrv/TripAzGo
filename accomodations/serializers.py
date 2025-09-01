@@ -39,7 +39,7 @@ class AmenitySerializer(serializers.ModelSerializer):
 class AccommodationSerializer(serializers.ModelSerializer):
     owner = SuperHostSerializer(read_only=True)
     amenities = AmenitySerializer(many=True)
-    location = LocationsSerializer(many=True)
+    location = LocationsSerializer()
     files = AccommodationFileSerializer(many=True)
     city = CityAncCountrySerializer()
 

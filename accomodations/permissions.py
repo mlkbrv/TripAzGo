@@ -3,6 +3,8 @@ from rest_framework import permissions
 
 class IsSuperHostOrAdmin(permissions.BasePermission):
     def has_permission(self, request, view):
+        if not request.user.is_authenticated:
+            return False
         if request.method in permissions.SAFE_METHODS:
             return True
         return (
@@ -16,11 +18,20 @@ class IsSuperHostOrReadOnly(permissions.BasePermission):
         if request.method in permissions.SAFE_METHODS:
             return True
 
-        if request.method == "POST":
-            return request.user.is_authenticated and request.user.is_superhost
+        return request.user.is_authenticated and request.user.is_superhost
 
     def has_object_permission(self, request, view, obj):
         if request.method in permissions.SAFE_METHODS:
             return True
 
         return request.user.is_authenticated and request.user.is_superhost and obj.owner == request.user
+
+
+class IsSuperHostOrAdminOnly(permissions.BasePermission):
+    def has_permission(self, request, view):
+        if not request.user.is_authenticated:
+            return False
+        return (
+                (request.user.is_authenticated and request.user.is_superhost) or
+                request.user.is_staff
+        )

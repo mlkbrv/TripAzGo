@@ -80,7 +80,7 @@ class Booking(models.Model):
         return self.nights * price
 
     def save(self, *args, **kwargs):
-        if self.checked_in and not self.checked_out:
+        if self.checked_in and self.checked_out:
             delta = self.checked_out - self.checked_in
             self.nights = delta.days
         else:
