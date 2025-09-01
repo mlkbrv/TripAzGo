@@ -4,7 +4,7 @@ from users.models import User, CityAndCountry
 from users.validators import validate_file_type
 from django.core.exceptions import ValidationError
 from django.utils.translation import gettext_lazy as _
-
+import uuid
 
 class Locations(models.Model):
     latitude = models.FloatField(blank=True, null=True)
@@ -29,6 +29,10 @@ class Accommodation(models.Model):
     location = models.ForeignKey(Locations, on_delete=models.CASCADE)
     owner = models.ForeignKey(User, on_delete=models.CASCADE)
 
+    city = models.ForeignKey(CityAndCountry, on_delete=models.CASCADE)
+
+    amenities = models.ManyToManyField(Amenity, blank=True, related_name='accommodations')
+
     is_available = models.BooleanField(default=True)
     is_verified = models.BooleanField(default=False)
 
@@ -42,8 +46,6 @@ class Accommodation(models.Model):
 
     price_per_night = models.FloatField(blank=True, null=True)
 
-    service_fee = models.FloatField(blank=True, null=True)
-
     created_at = models.DateTimeField(blank=True, null=True)
 
     def save(self, *args, **kwargs):
@@ -56,7 +58,7 @@ class Accommodation(models.Model):
 
 
 class AccommodationFile(models.Model):
-    accommodation = models.ForeignKey(Accommodation, on_delete=models.CASCADE)
+    accommodation = models.ForeignKey(Accommodation, on_delete=models.CASCADE,related_name='files')
     file = models.FileField(upload_to='accommodations_files/', null=True, blank=True, validators=[validate_file_type])
     uploaded_at = models.DateTimeField(auto_now_add=True)
 
@@ -65,9 +67,25 @@ class AccommodationFile(models.Model):
 
 
 class Booking(models.Model):
-    accommodation = models.ForeignKey(Accommodation, on_delete=models.CASCADE)
+    uuid = models.UUIDField(default=uuid.uuid4, editable=False, unique=True)
+    accommodation = models.ForeignKey(Accommodation, on_delete=models.CASCADE, related_name='bookings')
     checked_in = models.DateField(blank=True, null=True)
     checked_out = models.DateField(blank=True, null=True)
+
+    nights = models.IntegerField(default=0)
+
+    @property
+    def get_total_price(self):
+        price = self.accommodation.price_per_night or 0
+        return self.nights * price
+
+    def save(self, *args, **kwargs):
+        if self.checked_in and not self.checked_out:
+            delta = self.checked_out - self.checked_in
+            self.nights = delta.days
+        else:
+            self.nights = 0
+        super().save(*args, **kwargs)
 
     def clean(self):
         if self.checked_in and self.accommodation.check_in:
