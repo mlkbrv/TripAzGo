@@ -1,0 +1,188 @@
+### Accommodations API Requests
+
+### 1. GET - Получить все размещения (публичный доступ)
+GET http://127.0.0.1:8000/accommodations/all/
+Content-Type: application/json
+
+### 2. GET - Получить конкретное размещение по ID
+GET http://127.0.0.1:8000/accommodations/1/
+Content-Type: application/json
+
+### 3. PUT - Обновить размещение (только владелец или админ)
+PUT http://127.0.0.1:8000/accommodations/1/
+Content-Type: application/json
+Authorization: Bearer YOUR_ACCESS_TOKEN
+
+{
+    "title": "Обновленное название размещения",
+    "description": "Обновленное описание размещения",
+    "location": {
+        "latitude": 40.7128,
+        "longitude": -74.0060
+    },
+    "city": {
+        "city": "Москва",
+        "country": "Россия"
+    },
+    "amenities": [
+        {
+            "name": "Wi-Fi"
+        },
+        {
+            "name": "Парковка"
+        },
+        {
+            "name": "Кондиционер"
+        }
+    ],
+    "number_of_guests": 4,
+    "number_of_beds": 2,
+    "number_of_bathrooms": 1,
+    "number_of_bedrooms": 1,
+    "check_in": "2024-01-01",
+    "check_out": "2024-12-31",
+    "price_per_night": 150.00,
+    "files": []
+}
+
+### 4. PATCH - Частично обновить размещение (только владелец или админ)
+PATCH http://127.0.0.1:8000/accommodations/1/
+Content-Type: application/json
+Authorization: Bearer YOUR_ACCESS_TOKEN
+
+{
+    "title": "Новое название",
+    "price_per_night": 200.00
+}
+
+### 5. DELETE - Удалить размещение (только владелец или админ)
+DELETE http://127.0.0.1:8000/accommodations/1/
+Content-Type: application/json
+Authorization: Bearer YOUR_ACCESS_TOKEN
+
+### 6. GET - Получить все удобства (требует аутентификации)
+GET http://127.0.0.1:8000/accommodations/amenities/
+Content-Type: application/json
+Authorization: Bearer YOUR_ACCESS_TOKEN
+
+### 7. GET - Получить все города и страны (требует аутентификации)
+GET http://127.0.0.1:8000/accommodations/cities/
+Content-Type: application/json
+Authorization: Bearer YOUR_ACCESS_TOKEN
+
+### 8. GET - Получить все локации (только супер-хост или админ)
+GET http://127.0.0.1:8000/accommodations/locations/
+Content-Type: application/json
+Authorization: Bearer YOUR_ACCESS_TOKEN
+
+### 9. POST - Создать новую локацию (только супер-хост или админ)
+POST http://127.0.0.1:8000/accommodations/locations/
+Content-Type: application/json
+Authorization: Bearer YOUR_ACCESS_TOKEN
+
+{
+    "latitude": 40.7128,
+    "longitude": -74.0060
+}
+
+### 10. GET - Получить мои размещения (только супер-хост или админ)
+GET http://127.0.0.1:8000/accommodations/my/
+Content-Type: application/json
+Authorization: Bearer YOUR_ACCESS_TOKEN
+
+### 11. POST - Создать новое размещение (только супер-хост или админ)
+POST http://127.0.0.1:8000/accommodations/my/
+Content-Type: application/json
+Authorization: Bearer YOUR_ACCESS_TOKEN
+
+{
+    "title": "Мое новое размещение",
+    "description": "Описание моего размещения",
+    "location": {
+        "latitude": 40.7128,
+        "longitude": -74.0060
+    },
+    "city": {
+        "city": "Москва",
+        "country": "Россия"
+    },
+    "amenities": [
+        {
+            "name": "Wi-Fi"
+        },
+        {
+            "name": "Парковка"
+        },
+        {
+            "name": "Кондиционер"
+        }
+    ],
+    "number_of_guests": 4,
+    "number_of_beds": 2,
+    "number_of_bathrooms": 1,
+    "number_of_bedrooms": 1,
+    "check_in": "2024-01-01",
+    "check_out": "2024-12-31",
+    "price_per_night": 150.00,
+    "files": []
+}
+
+### Примеры данных для тестирования:
+
+### Пример создания размещения с минимальными данными:
+POST http://127.0.0.1:8000/accommodations/my/
+Content-Type: application/json
+Authorization: Bearer YOUR_ACCESS_TOKEN
+
+{
+    "title": "Тестовое размещение",
+    "description": "Описание тестового размещения",
+    "location": {
+        "latitude": 55.7558,
+        "longitude": 37.6176
+    },
+    "city": {
+        "city": "Санкт-Петербург",
+        "country": "Россия"
+    },
+    "amenities": [],
+    "number_of_guests": 2,
+    "number_of_beds": 1,
+    "number_of_bathrooms": 1,
+    "number_of_bedrooms": 1,
+    "price_per_night": 100.00,
+    "files": []
+}
+
+### Пример обновления размещения с новыми удобствами:
+PATCH http://127.0.0.1:8000/accommodations/1/
+Content-Type: application/json
+Authorization: Bearer YOUR_ACCESS_TOKEN
+
+{
+    "amenities": [
+        {
+            "name": "Wi-Fi"
+        },
+        {
+            "name": "Парковка"
+        },
+        {
+            "name": "Кондиционер"
+        },
+        {
+            "name": "Бассейн"
+        }
+    ],
+    "is_available": true
+}
+
+### Пример создания локации:
+POST http://127.0.0.1:8000/accommodations/locations/
+Content-Type: application/json
+Authorization: Bearer YOUR_ACCESS_TOKEN
+
+{
+    "latitude": 55.7558,
+    "longitude": 37.6176
+}
