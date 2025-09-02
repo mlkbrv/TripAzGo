@@ -62,9 +62,9 @@ class BookingListCreateAPIView(generics.ListCreateAPIView):
                         created_at=timezone.now())
 
 
-class MyHostBookingsListAPIView(generics.ListAPIView):
+class MyGuestBookingsListAPIView(generics.ListAPIView):
     serializer_class = BookingListSerializer
     permission_classes = [permissions.IsAuthenticated]
 
     def get_queryset(self):
-        return Booking.objects.filter(accommodation__owner=self.request.user)
+        return Booking.objects.filter(guest=self.request.user)

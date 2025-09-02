@@ -9,5 +9,5 @@ urlpatterns = [
     path('locations/', LocationListCreateAPIView.as_view(), name='location-list'),
     path('my/', MyAccommodationsListCreateAPIView.as_view(), name='my-list'),
     path('bookings/', BookingListCreateAPIView.as_view(), name='booking-list-create'),
-    path('bookings/my/', MyHostBookingsListAPIView.as_view(), name='my-host-bookings'),
+    path('bookings/my/', MyGuestBookingsListAPIView.as_view(), name='my-guest-bookings'),
 ]

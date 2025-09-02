@@ -66,7 +66,12 @@ class AccommodationSerializer(serializers.ModelSerializer):
 class BookingCreateSerializer(serializers.ModelSerializer):
     class Meta:
         model = Booking
-        fields = ['accommodation', 'checked_in', 'checked_out', 'message_to_the_host']
+        fields = [
+            'accommodation',
+            'checked_in',
+            'checked_out',
+            'message_to_the_host'
+        ]
 
         extra_kwargs = {
             'accommodation': {'required': False},
@@ -117,8 +122,14 @@ class BookingListSerializer(serializers.ModelSerializer):
     class Meta:
         model = Booking
         fields = [
-            'uuid', 'accommodation', 'checked_in', 'checked_out',
-            'nights', 'total_price', 'message_to_the_host', 'created_at'
+            'uuid',
+            'accommodation',
+            'checked_in',
+            'checked_out',
+            'nights',
+            'total_price',
+            'message_to_the_host',
+            'created_at'
         ]
 
     def get_total_price(self, obj):
