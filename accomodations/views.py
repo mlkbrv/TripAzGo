@@ -46,3 +46,25 @@ class MyAccommodationsListCreateAPIView(generics.ListCreateAPIView):
 
     def get_queryset(self):
         return Accommodation.objects.filter(owner=self.request.user)
+
+
+class BookingListCreateAPIView(generics.ListCreateAPIView):
+    permission_classes = [permissions.IsAuthenticated]
+
+    def get_serializer_class(self):
+        return BookingCreateSerializer if self.request.method == 'POST' else BookingListSerializer
+
+    def get_queryset(self):
+        return Booking.objects.filter(guest=self.request.user)
+
+    def perform_create(self, serializer):
+        serializer.save(guest=self.request.user,
+                        created_at=timezone.now())
+
+
+class MyHostBookingsListAPIView(generics.ListAPIView):
+    serializer_class = BookingListSerializer
+    permission_classes = [permissions.IsAuthenticated]
+
+    def get_queryset(self):
+        return Booking.objects.filter(accommodation__owner=self.request.user)

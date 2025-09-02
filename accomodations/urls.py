@@ -7,5 +7,7 @@ urlpatterns = [
     path('amenities/', AmenityListAPIView.as_view(), name='amenity-list'),
     path('cities/', CityListAPIView.as_view(), name='city-list'),
     path('locations/', LocationListCreateAPIView.as_view(), name='location-list'),
-    path('my/',MyAccommodationsListCreateAPIView.as_view(), name='my-list'),
+    path('my/', MyAccommodationsListCreateAPIView.as_view(), name='my-list'),
+    path('bookings/', BookingListCreateAPIView.as_view(), name='booking-list-create'),
+    path('bookings/my/', MyHostBookingsListAPIView.as_view(), name='my-host-bookings'),
 ]

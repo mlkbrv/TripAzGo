@@ -6,6 +6,7 @@ from django.core.exceptions import ValidationError
 from django.utils.translation import gettext_lazy as _
 import uuid
 
+
 class Locations(models.Model):
     latitude = models.FloatField(blank=True, null=True)
     longitude = models.FloatField(blank=True, null=True)
@@ -58,7 +59,7 @@ class Accommodation(models.Model):
 
 
 class AccommodationFile(models.Model):
-    accommodation = models.ForeignKey(Accommodation, on_delete=models.CASCADE,related_name='files')
+    accommodation = models.ForeignKey(Accommodation, on_delete=models.CASCADE, related_name='files')
     file = models.FileField(upload_to='accommodations_files/', null=True, blank=True, validators=[validate_file_type])
     uploaded_at = models.DateTimeField(auto_now_add=True)
 
@@ -67,12 +68,17 @@ class AccommodationFile(models.Model):
 
 
 class Booking(models.Model):
+    guest = models.ForeignKey(User, on_delete=models.CASCADE, related_name='guest_bookings',default=1)
     uuid = models.UUIDField(default=uuid.uuid4, editable=False, unique=True)
     accommodation = models.ForeignKey(Accommodation, on_delete=models.CASCADE, related_name='bookings')
     checked_in = models.DateField(blank=True, null=True)
     checked_out = models.DateField(blank=True, null=True)
 
     nights = models.IntegerField(default=0)
+
+    message_to_the_host = models.TextField(blank=True, null=True)
+
+    created_at = models.DateTimeField(blank=True, null=True)
 
     @property
     def get_total_price(self):

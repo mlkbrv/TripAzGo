@@ -63,34 +63,27 @@ class AccommodationSerializer(serializers.ModelSerializer):
         ]
 
 
-class BookingSerializer(serializers.ModelSerializer):
-    accommodation = AccommodationSerializer()
-    total_price = serializers.SerializerMethodField()
-
+class BookingCreateSerializer(serializers.ModelSerializer):
     class Meta:
         model = Booking
-        fields = [
-            'uuid',
-            'checked_in',
-            'checked_out',
-            'nights',
-            'total_price',
-        ]
-        read_only_fields = ['uuid']
+        fields = ['accommodation', 'checked_in', 'checked_out', 'message_to_the_host']
 
-    def get_total_price(self, obj):
-        return obj.get_total_price
+        extra_kwargs = {
+            'accommodation': {'required': False},
+            'checked_in': {'required': False},
+            'guest': {'required': True},
+            'message_to_the_host': {'required': False},
+        }
 
     def validate_checked_in(self, value):
         if value and value < timezone.now().date():
-            raise serializers.ValidationError(
-                "The check-in date cannot be in the past."
-            )
+            raise serializers.ValidationError("The check-in date cannot be in the past.")
         return value
 
     def validate(self, attrs):
         checked_in = attrs.get('checked_in')
         checked_out = attrs.get('checked_out')
+        accommodation = attrs.get('accommodation')
 
         if checked_in and checked_out:
             if checked_in >= checked_out:
@@ -98,4 +91,35 @@ class BookingSerializer(serializers.ModelSerializer):
                     "The check-out date must be later than the check-in date."
                 )
 
+        if accommodation:
+            if checked_in and accommodation.check_in and checked_in < accommodation.check_in:
+                raise serializers.ValidationError(
+                    f"Check-in must be no earlier than {accommodation.check_in}."
+                )
+            if checked_out and accommodation.check_out and checked_out > accommodation.check_out:
+                raise serializers.ValidationError(
+                    f"Check-out must be no later than {accommodation.check_out}."
+                )
+
+            if checked_in and checked_out and accommodation.bookings.filter(
+                    checked_in__lt=checked_out,
+                    checked_out__gt=checked_in
+            ).exists():
+                raise serializers.ValidationError("Selected dates are already booked.")
+
         return attrs
+
+
+class BookingListSerializer(serializers.ModelSerializer):
+    accommodation = AccommodationSerializer(read_only=True)
+    total_price = serializers.SerializerMethodField()
+
+    class Meta:
+        model = Booking
+        fields = [
+            'uuid', 'accommodation', 'checked_in', 'checked_out',
+            'nights', 'total_price', 'message_to_the_host', 'created_at'
+        ]
+
+    def get_total_price(self, obj):
+        return obj.get_total_price
