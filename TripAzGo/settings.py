@@ -41,7 +41,8 @@ INSTALLED_APPS = [
     'users.apps.UsersConfig',
     'accomodations.apps.AccomodationsConfig',
     'phonenumber_field',
-    'drf_spectacular'
+    'drf_spectacular',
+    'cars.apps.CarsConfig',
 ]
 
 MIDDLEWARE = [
