@@ -43,6 +43,7 @@ INSTALLED_APPS = [
     'phonenumber_field',
     'drf_spectacular',
     'cars.apps.CarsConfig',
+    'tourpackets.apps.TourpacketsConfig',
 ]
 
 MIDDLEWARE = [
