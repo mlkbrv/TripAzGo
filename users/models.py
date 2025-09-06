@@ -73,6 +73,7 @@ class User(AbstractUser):
     is_verified = models.BooleanField(default=False)
 
     is_superhost = models.BooleanField(default=False)
+    is_tourguide = models.BooleanField(default=False)
 
     is_active = models.BooleanField(default=True)
     is_staff = models.BooleanField(default=False)
@@ -91,6 +92,13 @@ class User(AbstractUser):
         return self.real_name or self.email
 
 class SuperHost(models.Model):
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    rating = models.FloatField(null=True, blank=True)
+
+    def __str__(self):
+        return self.user.real_name or self.user.email
+
+class TourGuide(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     rating = models.FloatField(null=True, blank=True)
 
