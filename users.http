@@ -1,0 +1,37 @@
+### Регистрация нового пользователя
+POST http://127.0.0.1:8000/users/register/ HTTP/1.1
+Content-Type: application/json
+
+{
+    "email": "testuser@example.com",
+    "password": "StrongPassword123!",
+    "password2": "StrongPassword123!",
+    "display_name": "TestUser",
+    "real_name": "Test User"
+}
+
+### Получение JWT токена
+POST http://127.0.0.1:8000/users/token/ HTTP/1.1
+Content-Type: application/json
+
+{
+    "email": "testuser@example.com",
+    "password": "StrongPassword123!"
+}
+
+### Получение обновлённого токена (refresh)
+POST http://127.0.0.1:8000/users/token/refresh/ HTTP/1.1
+Content-Type: application/json
+
+{
+    "refresh": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoicmVmcmVzaCIsImV4cCI6MTc1NjU4OTMzMSwiaWF0IjoxNzU2NTAyOTMxLCJqdGkiOiIzZGY2MGIzNDZmYmM0NDY0OTM5ZWY2OGNhNmE0OGQyMCIsInVzZXJfaWQiOiIxIn0.Wfr6WAcr1yxjRz5OLx-uCRqMgXPBbOQK5aYbh3P4KRo"
+}
+
+### Получение JWT токена
+POST http://127.0.0.1:8000/users/token/ HTTP/1.1
+Content-Type: application/json
+
+{
+    "email": "admin@gmail.com",
+    "password": "Qwerty1!"
+}
